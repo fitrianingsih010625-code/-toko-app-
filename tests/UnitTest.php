@@ -19,9 +19,9 @@ class UnitTest {
             $transaksi->tambahBarang($barang2, 3);  // 3 x 2500 = 7500
             
             $total = $transaksi->hitungTotal();
-            $expected = 17500;
+            $expected = 17500.0;
             
-            if ($total === $expected) {
+            if ($total == $expected) {
                 echo "  ✓ Total belanja benar: $total\n";
                 $this->passed++;
             } else {

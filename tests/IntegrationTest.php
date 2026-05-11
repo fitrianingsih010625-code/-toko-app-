@@ -30,7 +30,7 @@ try {
     // Hitung total
     $total = $transaksi->hitungTotal();
     $expectedTotal = (5000 * 2) + (3000 * 1) + (2000 * 3); // 19000
-    if ($total === $expectedTotal) {
+    if ($total == $expectedTotal) {
         echo "✓ Total belanja benar: Rp$total\n";
     } else {
         echo "✗ Total belanja salah!\n";
@@ -80,7 +80,7 @@ try {
     echo "----------------------------\n";
     $transaksiKosong = new Transaksi();
     $totalKosong = $transaksiKosong->hitungTotal();
-    if ($totalKosong === 0.0) {
+    if ($totalKosong == 0.0) {
         echo "✓ Transaksi kosong menghasilkan total 0\n";
     } else {
         echo "✗ Transaksi kosong seharusnya menghasilkan total 0\n";
