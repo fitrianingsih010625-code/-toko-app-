@@ -1,0 +1,59 @@
+name: CI - Toko App
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+        tools: composer
+    
+    - name: Validate composer.json
+      run: |
+        if [ -f composer.json ]; then
+          composer validate
+        fi
+    
+    - name: Cache Composer dependencies
+      if: hashFiles('composer.json') != ''
+      uses: actions/cache@v4
+      with:
+        path: vendor
+        key: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
+        restore-keys: |
+          ${{ runner.os }}-composer-
+    
+    - name: Install dependencies
+      if: hashFiles('composer.json') != ''
+      run: composer install --prefer-dist --no-progress
+    
+    - name: Check syntax errors
+      run: |
+        echo "Checking PHP syntax..."
+        php -l src/Barang.php
+        php -l src/Transaksi.php
+        php -l src/main.php
+        php -l tests/UnitTest.php
+        php -l tests/IntegrationTest.php
+    
+    - name: Run Unit Tests
+      run: |
+        echo "Running Unit Tests..."
+        php tests/UnitTest.php
+    
+    - name: Run Integration Tests
+      run: |
+        echo "Running Integration Tests..."
+        php tests/IntegrationTest.php
